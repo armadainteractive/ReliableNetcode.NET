@@ -1,0 +1,23 @@
+# Builds this library, runs tests, and packages it as a NuGet package. Publishes the package to the 
+# given feed. 
+# 
+# To set this up in Google Container Builder create a new build trigger based on branch. Set the following 
+# substitution variables:
+#     _VER         Base package version to use, e.g. 0.1.2
+#     _FEED        The NuGet feed publish address
+#     _FEED_KEY    The NuGet feed publish key
+
+steps:
+- name: "mono:latest"
+  entrypoint: "bash"
+  args:
+  - '/workspace/pack.sh'
+  - '${_VER}-sha$SHORT_SHA'
+
+- name: "microsoft/dotnet:2.0.5-sdk-2.1.4-stretch"
+  entrypoint: "bash"
+  args:
+  - '/workspace/push.sh'
+  - '${_VER}-sha$SHORT_SHA'
+  - '${_FEED}'
+  - '${_FEED_KEY}'
