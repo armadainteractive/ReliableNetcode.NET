@@ -6,18 +6,19 @@
 #     _VER         Base package version to use, e.g. 0.1.2
 #     _FEED        The NuGet feed publish address
 #     _FEED_KEY    The NuGet feed publish key
-
+#
+# Example to run on dev environment without docker, without publish
+#   ./publish.sh 0.1.0-something
+# 
+# Example inside docker with publish, emulating how it is run on Google Cloud Container Builder:
+#     docker run -v $(pwd):/workspace --entrypoint bash \
+#        microsoft/dotnet:2.0.5-sdk-2.1.4-stretch \
+#        /workspace/publish.sh 0.1.2-foo https://www.myget.org/F/games/api/v2/package [my-feed-key]
 steps:
-- name: "mono:latest"
-  entrypoint: "bash"
-  args:
-  - '/workspace/pack.sh'
-  - '${_VER}-sha$SHORT_SHA'
-
 - name: "microsoft/dotnet:2.0.5-sdk-2.1.4-stretch"
   entrypoint: "bash"
   args:
-  - '/workspace/push.sh'
-  - '${_VER}-sha$SHORT_SHA'
+  - '/workspace/publish.sh'
+  - '${_VER}-$COMMIT_SHA'
   - '${_FEED}'
   - '${_FEED_KEY}'
