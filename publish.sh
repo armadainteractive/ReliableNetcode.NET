@@ -33,8 +33,8 @@ if [ -z "$FEED" ]; then
     echo "Package feed not defined, skipping package publish"
 else
     echo "Publishing package $VER to $FEED"
-	dotnet nuget push -s $FEED -k $FEED_KEY ReliableNetcode/bin/Release/ReliableNetcode.$VER.nupkg
-	dotnet nuget push -s $FEED -k $FEED_KEY ReliableNetcode/bin/Release/ReliableNetcode.$VER.symbols.nupkg
+	dotnet nuget push -s $FEED -k $FEED_KEY ReliableNetcode/bin/Release/ReliableNetcode.NET.$VER.nupkg
+	dotnet nuget push -s $FEED -k $FEED_KEY ReliableNetcode/bin/Release/ReliableNetcode.NET.$VER.symbols.nupkg
 fi
 
 echo "OK"
